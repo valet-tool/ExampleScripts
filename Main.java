@@ -8,9 +8,8 @@ import java.io.IOException;
 public class Main {
 
     private double U; //Utility
-    private double L; //Latency
-    private double C; //Cost
-    final private int R  = 5; //Reward (Arbitrarily Defined)
+    final private int R  = 50; //Reward (Arbitrarily Defined)
+    private double TotalCalUtil; // Used to store the calcuated utility value
     final private String csvFile = "/Users/dxkvse/Desktop/exampleOutput.csv"; // Location of csv output file being read in
 
 
@@ -23,19 +22,17 @@ public class Main {
         // Define values that cannot be changed
 
         // Use hardcoded Latency and cost values
-        L = 2;
-        C = 5;
+        double L = 2; //Latency
+        double C = 5; //Cost
         System.out.println("The expected Utility:" + UtilityEquation(L, C));
-
-
-        // Next use some values from our dataset. This will show how the expected utility wil change with anticpated tactic volatility
-
+        
 // ***********************
 
-
+        // Next use some values from our dataset. This will show how the expected utility wil change with anticpated tactic volatility
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ",";
+        int counter = 0;
 
         try {
 
@@ -44,10 +41,13 @@ public class Main {
 
                 // use comma as separator
                 String[] tacticValues = line.split(cvsSplitBy);
+                double Util = UtilityEquation(Double.parseDouble(tacticValues[3]), Double.parseDouble(tacticValues[1]));
 
-               // System.out.println("Country [code= " + country[0] + " , name=" + country[1] + "]");
+                TotalCalUtil += Util; // Determine the total calculated utilty. Used for displaying average utility
 
-                System.out.println("The expected Utility:" + UtilityEquation(Double.parseDoubletacticValues[1]), tacticValues[2]));
+                System.out.println(counter + ") The expected Utility:" + Util);
+                //System.out.println(Util);
+                counter=counter+1;  // Helps determine the average utilty from the evaluation
 
             }
 
@@ -67,16 +67,18 @@ public class Main {
 
 // The average expected utility:
 
-// ***********************
-      //  System.out.println("The expected Utility:" + UtilityEquation(L, C));
+        System.out.println("Average Util: " + TotalCalUtil/counter);
 
     }
 
     // Utility equation created for demonstration purposes
     private double UtilityEquation(double Latency, double Cost){
+      //  System.out.println(Latency + " " + Cost);
         // Very simple Utilty equation
 
-        U = (R/C+L);
+
+        //CLEAN THIS UP
+        U = (R/(Cost+Latency));
 
 
 /*
