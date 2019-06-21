@@ -13,6 +13,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
+import java.text.DecimalFormat;
+
 
 public class Main {
 
@@ -21,10 +23,11 @@ public class Main {
     final private int T = 5; //Arbitrarily defined latency threshold
     final private int P = 2; //Arbitrarily defined penalty
     private double TotalCalUtil; // Used to store the calcuated utility value for all iterations
-//    final private String csvFile = "/Users/dxkvse/Desktop/exampleOutput_simple.csv"; // Location of csv output file being read in
-    final private String csvFile = "/Users/dxkvse/Desktop/GH/ExampleScripts/exampleOutput_simple.csv"; // Location of csv output file being read in
+    final private String csvFile = "/Users/dxkvse/git/ExampleScripts/exampleOutput_simple.csv"; // Location of csv output file being read in
 
-
+ 
+    private static DecimalFormat df = new DecimalFormat("0.00");
+    
     public static void main(String[] args) {
         Main main = new Main();
         main.start();
@@ -57,10 +60,10 @@ public class Main {
                 // use comma as separator
                 String[] tacticValues = line.split(cvsSplitBy);
                 double Util = UtilityEquation(Double.parseDouble(tacticValues[3]), Double.parseDouble(tacticValues[1]));
-
+                
                 TotalCalUtil += Util; // Determine the total calculated utilty. Used for displaying average utility
 
-                System.out.println(counter + ") The expected Utility: " + Util);
+                System.out.println(counter + ") The calculated utility: " + df.format(Util));
                 //System.out.println(Util);
                 counter=counter+1;  // Helps determine the average utilty from the evaluation
 
@@ -82,15 +85,15 @@ public class Main {
 
 // The average expected utility:
 
-        System.out.println("Average Util: " + TotalCalUtil/counter);
+        System.out.println("Average Util: " + df.format(TotalCalUtil/counter));
 
     }
 
     // Utility equation created for demonstration purposes
     private double UtilityEquation(double Latency, double Cost){
-       // System.out.println("Input Values:" + Latency + " " + Cost);
-        // Very simple utilty equation
-
+    
+    	
+    	// Very simple utility equation. This would obviously be highly dependent on the 
 
         if(Latency>T){
             U = (R/Cost)-P;
@@ -98,18 +101,16 @@ public class Main {
             U = (R/Cost);
         }
 
-
         return U;
     }
 
 
-    // Response must be made in X amount of time, other wise a pentalty is incurred.
 
 
 }
 
 /* Todo
-- Make convert to Double, values should be double
+
 
 
  */
