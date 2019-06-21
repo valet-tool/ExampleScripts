@@ -1,3 +1,11 @@
+/*
+
+Description: This script is used to demonstrate a very basic example of the implications of accounting for tactic volatility in a generic utility equation.
+The added tactic values are derived from a small result-set from the VALET tactic volatility data creation tool.
+
+
+ */
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -5,12 +13,16 @@ import java.io.IOException;
 
 
 
+
 public class Main {
 
     private double U; //Utility
     final private int R  = 50; //Reward (Arbitrarily Defined)
-    private double TotalCalUtil; // Used to store the calcuated utility value
-    final private String csvFile = "/Users/dxkvse/Desktop/exampleOutput.csv"; // Location of csv output file being read in
+    final private int T = 5; //Arbitrarily defined latency threshold
+    final private int P = 2; //Arbitrarily defined penalty
+    private double TotalCalUtil; // Used to store the calcuated utility value for all iterations
+//    final private String csvFile = "/Users/dxkvse/Desktop/exampleOutput_simple.csv"; // Location of csv output file being read in
+    final private String csvFile = "/Users/dxkvse/Desktop/GH/ExampleScripts/exampleOutput_simple.csv"; // Location of csv output file being read in
 
 
     public static void main(String[] args) {
@@ -21,12 +33,15 @@ public class Main {
     public void start() {
         // Define values that cannot be changed
 
-        // Use hardcoded Latency and cost values
+        // Use hardcoded latency and cost values, emulating the use of static tactic values
         double L = 2; //Latency
         double C = 5; //Cost
-        System.out.println("The expected Utility:" + UtilityEquation(L, C));
-        
+        System.out.println("The expected Utility (static values):" + UtilityEquation(L, C));
+
 // ***********************
+
+
+        System.out.println(" **** Start Using Dynamic Tactic Values ***** ");
 
         // Next use some values from our dataset. This will show how the expected utility wil change with anticpated tactic volatility
         BufferedReader br = null;
@@ -45,7 +60,7 @@ public class Main {
 
                 TotalCalUtil += Util; // Determine the total calculated utilty. Used for displaying average utility
 
-                System.out.println(counter + ") The expected Utility:" + Util);
+                System.out.println(counter + ") The expected Utility: " + Util);
                 //System.out.println(Util);
                 counter=counter+1;  // Helps determine the average utilty from the evaluation
 
@@ -73,25 +88,22 @@ public class Main {
 
     // Utility equation created for demonstration purposes
     private double UtilityEquation(double Latency, double Cost){
-      //  System.out.println(Latency + " " + Cost);
-        // Very simple Utilty equation
+       // System.out.println("Input Values:" + Latency + " " + Cost);
+        // Very simple utilty equation
 
 
-        //CLEAN THIS UP
-        U = (R/(Cost+Latency));
-
-
-/*
-        if(T<=L){
-            U = (Ro+Rm)/C;
+        if(Latency>T){
+            U = (R/Cost)-P;
         }else{
-            U = (Rm)/C;
+            U = (R/Cost);
         }
-  */
+
+
         return U;
     }
 
 
+    // Response must be made in X amount of time, other wise a pentalty is incurred.
 
 
 }
