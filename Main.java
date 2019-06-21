@@ -15,16 +15,14 @@ import java.io.IOException;
 
 import java.text.DecimalFormat;
 
-
 public class Main {
 
     private double U; //Utility
     final private int R  = 50; //Reward (Arbitrarily Defined)
     final private int T = 5; //Arbitrarily defined latency threshold
     final private int P = 2; //Arbitrarily defined penalty
-    private double TotalCalUtil; // Used to store the calcuated utility value for all iterations
+    private double TotalCalUtil; // Used to store the calculated utility value for all iterations
     final private String csvFile = "/Users/dxkvse/git/ExampleScripts/exampleOutput_simple.csv"; // Location of csv output file being read in
-
  
     private static DecimalFormat df = new DecimalFormat("0.00");
     
@@ -43,10 +41,11 @@ public class Main {
 
 // ***********************
 
-
         System.out.println(" **** Start Using Dynamic Tactic Values ***** ");
 
-        // Next use some values from our dataset. This will show how the expected utility wil change with anticpated tactic volatility
+        // Next use some values from our dataset. This will show how the expected utility will change with anticipated tactic volatility
+        
+        // This code will read through the .csv file
         BufferedReader br = null;
         String line = "";
         String cvsSplitBy = ",";
@@ -64,9 +63,7 @@ public class Main {
                 TotalCalUtil += Util; // Determine the total calculated utilty. Used for displaying average utility
 
                 System.out.println(counter + ") The calculated utility: " + df.format(Util));
-                //System.out.println(Util);
-                counter=counter+1;  // Helps determine the average utilty from the evaluation
-
+                counter=counter+1;  // Helps determine the average utility from the evaluation
             }
 
         } catch (FileNotFoundException e) {
@@ -101,10 +98,8 @@ public class Main {
             U = (R/Cost);
         }
 
-        return U;
+        return U; //return the calculated utility
     }
-
-
 
 
 }
